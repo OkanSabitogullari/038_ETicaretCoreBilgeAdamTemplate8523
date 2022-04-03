@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DataAccess.Entities
 {
+    //[Table("ETicaretUrunler")]
     public class Urun : RecordBase
     {
         [Required]
