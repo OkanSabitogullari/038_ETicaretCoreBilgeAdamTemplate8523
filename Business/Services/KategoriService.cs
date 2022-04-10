@@ -17,10 +17,23 @@ namespace Business.Services
         //{
         //    Repo = kategoriRepo;
         //}
-
+        // program.cs'de IoC container'da yönetilmediği için burada enjekte etmeye gerek kalmadı.
         public Result Add(KategoriModel model)
         {
-            throw new NotImplementedException();
+            //Kategori existingEntity = Repo.Query().SingleOrDefault(kategori => kategori.Adi.ToUpper() == model.Adi.ToUpper().Trim());
+            //if (existingEntity != null)
+            //    return new ErrorResult("Girdiğiniz kategori adına sahip kayıt bulunmaktadır!");
+
+            if (Repo.Query().Any(kategori => kategori.Adi.ToUpper() == model.Adi.ToUpper().Trim()))
+                return new ErrorResult("Girdiğiniz kategori adına sahip kayıt bulunmaktadır!");
+            Kategori entity = new Kategori()
+            {
+                Adi = model.Adi.Trim(),
+                //Aciklamasi = String.IsNullOrWhiteSpace(model.Aciklamasi) ? null : model.Aciklamasi.Trim()
+                Aciklamasi = model.Aciklamasi?.Trim()
+            };
+            Repo.Add(entity);
+            return new SuccessResult();
         }
 
         public Result Delete(int id)
@@ -46,7 +59,13 @@ namespace Business.Services
 
         public Result Update(KategoriModel model)
         {
-            throw new NotImplementedException();
+            if (Repo.Query().Any(kategori => kategori.Adi.ToUpper() == model.Adi.ToUpper().Trim() && kategori.Id != model.Id))
+                return new ErrorResult("Girdiğiniz kategori adına sahip kayıt bulunmaktadır!");
+            Kategori entity = Repo.Query().SingleOrDefault(kategori => kategori.Id == model.Id);
+            entity.Adi = model.Adi.Trim();
+            entity.Aciklamasi = model.Aciklamasi.Trim();
+            Repo.Update(entity);
+            return new SuccessResult("Kategori başarıyla güncellendi.");
         }
     }
 }
