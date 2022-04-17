@@ -1,5 +1,6 @@
 using Business.Services;
 using Business.Services.Bases;
+using DataAccess.Contexts;
 using DataAccess.Repositories;
 using DataAccess.Repositories.Bases;
 
@@ -9,6 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 //IoC Container : Inversion of Control Container : baðýmlýlýklarýn yönetimi : Autofac, Ninject
+builder.Services.AddDbContext<ETicaretContext>();
 //builder.Services.AddScoped<KategoriRepoBase, KategoriRepo>();
 builder.Services.AddScoped<IKategoriService, KategoriService>();
 //builder.Services.AddSingleton<IKategoriService, KategoriService>();

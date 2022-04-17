@@ -38,7 +38,16 @@ namespace Business.Services
 
         public Result Delete(int id)
         {
-            throw new NotImplementedException();
+            //Repo.Delete(k => k.Id == id);
+            //Kategori entity = Repo.Query("Urunler").SingleOrDefault(k => k.Id == id);
+            Kategori entity = Repo.Query(k => k.Id == id, "Urunler").SingleOrDefault();
+
+            if(entity.Urunler !=null && entity.Urunler.Count > 0)
+            {
+                return new ErrorResult("Kategori silinemez çünkü ilişkili ürünler bulunmaktadır!");
+            }
+            Repo.Delete(entity);
+            return new SuccessResult("Kategori başarıyla silindi.");
         }
 
         public void Dispose()
@@ -48,11 +57,12 @@ namespace Business.Services
 
         public IQueryable<KategoriModel> Query()
         {
-            IQueryable<KategoriModel> query = Repo.Query().OrderBy(k => k.Adi).Select(k => new KategoriModel()
+            IQueryable<KategoriModel> query = Repo.Query("Urunler").OrderBy(k => k.Adi).Select(k => new KategoriModel()
             {
                 Id = k.Id,
                 Adi = k.Adi,
-                Aciklamasi = k.Aciklamasi
+                Aciklamasi = k.Aciklamasi,
+                UrunSayisiDisplay= k.Urunler.Count
             });
             return query;
         }
