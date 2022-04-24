@@ -1,8 +1,13 @@
-﻿using DataAccess.Contexts;
-using DataAccess.Entities;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using DataAccess.Contexts;
+using DataAccess.Entities;
+using Business.Services;
 
 namespace MvcWebUI.Controllers
 {
@@ -10,16 +15,30 @@ namespace MvcWebUI.Controllers
     {
         private readonly ETicaretContext _context;
 
-        public UrunlerController(ETicaretContext context)
+        //public UrunlerController(ETicaretContext context)
+        //{
+        //    _context = context;
+        //}
+        private readonly IUrunService _urunService;
+
+        public UrunlerController(IUrunService urunService)
         {
-            _context = context;
+            _urunService = urunService;
         }
 
+
+
         // GET: Urunler
+        //public IActionResult Index()
+        //{
+        //    var eTicaretContext = _context.Urunler.Include(u => u.Kategori);
+        //    return View(eTicaretContext.ToList());
+        //}
+
         public IActionResult Index()
         {
-            var eTicaretContext = _context.Urunler.Include(u => u.Kategori);
-            return View(eTicaretContext.ToList());
+            var model = _urunService.Query().ToList();
+            return View(model);
         }
 
         // GET: Urunler/Details/5

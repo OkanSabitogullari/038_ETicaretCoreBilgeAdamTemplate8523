@@ -10,11 +10,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 //IoC Container : Inversion of Control Container : baðýmlýlýklarýn yönetimi : Autofac, Ninject
-builder.Services.AddDbContext<ETicaretContext>();
+//builder.Services.AddDbContext<ETicaretContext>();
 //builder.Services.AddScoped<KategoriRepoBase, KategoriRepo>();
 builder.Services.AddScoped<IKategoriService, KategoriService>();
 //builder.Services.AddSingleton<IKategoriService, KategoriService>();
 //builder.Services.AddTransient<IKategoriService, KategoriService>();
+builder.Services.AddScoped<IUrunService, UrunService>();
 
 var app = builder.Build();
 

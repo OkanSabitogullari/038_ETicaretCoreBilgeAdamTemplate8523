@@ -1,38 +1,45 @@
-﻿@model IEnumerable<DataAccess.Entities.Urun>
+﻿@*@model IEnumerable<DataAccess.Entities.Urun>*@
+
+@model IEnumerable<UrunModel>
+
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Ürün Listesi";
 }
 
 <h1>@ViewData["Title"]</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Yeni Ürün</a>
 </p>
-<table class="table">
+@*<table class="table">*@
+<table id="urunler" class="display" style="width:100%">
     <thead>
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Adi)
             </th>
-            <th>
+           @* <th>
                 @Html.DisplayNameFor(model => model.Aciklamasi)
-            </th>
-            <th>
+            </th>*@
+            @*<th>
                 @Html.DisplayNameFor(model => model.BirimFiyati)
+            </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.BirimFiyatiDisplay)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.StokMiktari)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.SonKullanmaTarihi)
+                @Html.DisplayNameFor(model => model.SonKullanmaTarihiDisplay)
             </th>
-            <th>
+           @* <th>
                 @Html.DisplayNameFor(model => model.Kategori)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Guid)
-            </th>
+            </th>*@
             <th></th>
         </tr>
     </thead>
@@ -42,30 +49,41 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Adi)
             </td>
-            <td>
+            @*<td>
                 @Html.DisplayFor(modelItem => item.Aciklamasi)
-            </td>
+            </td>*@
             <td>
-                @Html.DisplayFor(modelItem => item.BirimFiyati)
+                @Html.DisplayFor(modelItem => item.BirimFiyatiDisplay)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.StokMiktari)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.SonKullanmaTarihi)
+                @Html.DisplayFor(modelItem => item.SonKullanmaTarihiDisplay)
             </td>
-            <td>
+            @*<td>
                 @Html.DisplayFor(modelItem => item.Kategori.Adi)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Guid)
-            </td>
+            </td>*@
             <td>
-				<a asp-action="Details" asp-route-id="@item.Id">Details</a>&nbsp;|&nbsp;
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>&nbsp;|&nbsp;
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+				<a asp-action="Details" asp-route-id="@item.Id">Detay</a>&nbsp;|&nbsp;
+                <a asp-action="Edit" asp-route-id="@item.Id">Düzenle</a>&nbsp;|&nbsp;
+                <a asp-action="Delete" asp-route-id="@item.Id">Sil</a>
             </td>
         </tr>
 }
     </tbody>
 </table>
+
+@section Scripts {
+    <link rel="stylesheet" href="/lib/datatables/css/jquery.dataTables.min.css" />
+    <script src="/lib/datatables/js/jquery.dataTables.min.js"></script>
+
+    <script>
+        $(document).ready( function () {
+             $('#urunler').DataTable();
+        });
+    </script>
+}
