@@ -20,7 +20,21 @@ namespace Business.Services
 
         public Result Add(UrunModel model)
         {
-            throw new NotImplementedException();
+            if (Repo.Query().Any(u => u.Adi.ToLower() == model.Adi.ToLower().Trim()))
+                return new ErrorResult("Belirtilen ürün adına sahip kayıt bulunmaktadır!");
+            if (model.SonKullanmaTarihi.HasValue && model.SonKullanmaTarihi.Value < DateTime.Today)
+                return new ErrorResult("Son kullanma tarihi bugün veya daha sonrası olmalıdır!");
+            Urun entity = new Urun()
+            {
+                Aciklamasi = model.Aciklamasi.Trim(),
+                Adi = model.Adi.Trim(),
+                BirimFiyati = model.BirimFiyati.Value,
+                KategoriId = model.KategoriId.Value,
+                SonKullanmaTarihi = model.SonKullanmaTarihi,
+                StokMiktari = model.StokMiktari.Value
+            };
+            Repo.Add(entity);
+            return new SuccessResult("Ürün başarıyla eklendi.");
         }
 
         public Result Delete(int id)
@@ -45,7 +59,7 @@ namespace Business.Services
                 StokMiktari = u.StokMiktari,
 
                 BirimFiyatiDisplay = u.BirimFiyati.ToString("C2", new CultureInfo("tr-TR")), //"en-US"
-                SonKullanmaTarihiDisplay = u.SonKullanmaTarihi.HasValue ? u.SonKullanmaTarihi.Value.ToString("dd.MM.yyyy") : ""
+                SonKullanmaTarihiDisplay = u.SonKullanmaTarihi.HasValue ? u.SonKullanmaTarihi.Value.ToString("yyyy-MM-dd") : ""
             });
         }
 
